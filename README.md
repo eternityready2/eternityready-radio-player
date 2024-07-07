@@ -12,6 +12,7 @@ This is a guide to deploy the Eternity application on your local machine and a V
 
 Create a `.env` file at the root of your project with the following contents:
 
+```
 SESSION_SECRET=XXXXXXXXXXXXXXX
 NEXT_PUBLIC_APP_URL=XXXXXXXXXXXXX
 
@@ -20,6 +21,7 @@ DB_PORT=XXXX
 DB_USERNAME=XXXXXXXXXXXXX
 DB_PASSWORD=XXXXXXXXXXXXXXXXX
 DB_NAME=XXXXXXXXXXXXXXXXXXXXX
+```
 
 ## MySQL Database Setup
 
