@@ -97,7 +97,7 @@ DB_NAME=XXXXXXXXXXXXXXXXXXXXX
    Pull the Docker image from the GitHub Container Registry:
 
    ```bash
-   docker pull ghcr.io/adityaRawat96/eternity:latest
+   docker pull ghcr.io/eternityready2/eternity:latest
    ```
 
 3. **Create a .env file:\***
@@ -107,7 +107,7 @@ DB_NAME=XXXXXXXXXXXXXXXXXXXXX
 4. **Run the Docker container:**
 
    ```bash
-   docker run --add-host="database:SERVER_IP" --name eternity-container -p 3000:3000 ghcr.io/adityarawat96/eternity:latest
+   docker run --add-host="database:SERVER_IP" --name eternity-container -p 3000:3000 ghcr.io/eternityready2/eternity:latest
    ```
 
 5. **Open your browser and navigate to `http://your-vps-ip:3000`**
