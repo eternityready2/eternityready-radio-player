@@ -111,7 +111,7 @@ const Advertisements = () => {
                           alt={advertisement.name}
                           width={1920}
                           height={1080}
-                          className="w-full h-auto rounded-md"
+                          className="max-w-full h-auto w-auto max-h-[250px] md:max-h-[400px] rounded-md mx-auto"
                           onLoad={(img) => {
                             setTimeout(() => {
                               carouselContentRef.current.style.height = `${img.target.height}px`;

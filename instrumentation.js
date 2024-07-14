@@ -58,18 +58,18 @@ export async function register() {
                   };
                   // store the track in the database if not already stored for this station by this trackId
                   const sql = `SELECT * FROM tracks WHERE stationId = ? AND trackId = ?`;
-                  const params = [station.id, track.trackId];
+                  const params = [station.id, track.trackId || 0];
                   const rows = await query(sql, params);
                   if (rows.length === 0) {
                     const sql = `INSERT INTO tracks (stationId, trackId, artistId, trackName, artistName, trackViewUrl, artworkURL) VALUES (?, ?, ?, ?, ?, ?, ?)`;
                     const params = [
                       track.stationId,
-                      track.trackId,
-                      track.artistId || 0,
-                      track.trackName,
-                      track.artistName,
-                      track.trackViewUrl,
-                      track.artworkURL,
+                      track.trackId ? track.trackId : 0,
+                      track.artistId ? track.artistId : 0,
+                      track.trackName ? track.trackName : "",
+                      track.artistName ? track.artistName : "",
+                      track.trackViewUrl ? track.trackViewUrl : "",
+                      track.artworkURL ? track.artworkURL : "",
                     ];
                     await query(sql, params);
                   }
@@ -103,14 +103,14 @@ export async function register() {
                   // Update the track in the database
                   const sql = `UPDATE playing SET trackId = ?, artistId = ?, title = ?, trackName = ?, artistName = ?, trackViewUrl = ?, artworkURL = ?, artistImage = ? WHERE stationId = ?`;
                   const params = [
-                    track.trackId,
-                    track.artistId || 0,
-                    track.title,
-                    track.trackName,
-                    track.artistName,
-                    track.trackViewUrl,
-                    track.artworkURL,
-                    track.artistImage,
+                    track.trackId ? track.trackId : 0,
+                    track.artistId ? track.artistId : 0,
+                    track.title ? track.title : "",
+                    track.trackName ? track.trackName : "",
+                    track.artistName ? track.artistName : "",
+                    track.trackViewUrl ? track.trackViewUrl : "",
+                    track.artworkURL ? track.artworkURL : "",
+                    track.artistImage ? track.artistImage : "",
                     station.id,
                   ];
                   await query(sql, params);
@@ -119,14 +119,14 @@ export async function register() {
                   const sql = `INSERT INTO playing (stationId, trackId, artistId, title, trackName, artistName, trackViewUrl, artworkURL, artistImage) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
                   const params = [
                     track.stationId,
-                    track.trackId,
-                    track.artistId || 0,
-                    track.title,
-                    track.trackName,
-                    track.artistName,
-                    track.trackViewUrl,
-                    track.artworkURL,
-                    track.artistImage,
+                    track.trackId ? track.trackId : 0,
+                    track.artistId ? track.artistId : 0,
+                    track.title ? track.title : "",
+                    track.trackName ? track.trackName : "",
+                    track.artistName ? track.artistName : "",
+                    track.trackViewUrl ? track.trackViewUrl : "",
+                    track.artworkURL ? track.artworkURL : "",
+                    track.artistImage ? track.artistImage : "",
                   ];
                   await query(sql, params);
                 }

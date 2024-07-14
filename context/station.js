@@ -1,5 +1,5 @@
 "use client";
-import { set } from "date-fns";
+
 import { useParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
@@ -122,11 +122,10 @@ export const StationProvider = ({ children }) => {
             throw new Error(data.error || "Failed to fetch tracks");
           }
 
-          console.log("Upcoming tracks loaded", data);
+          console.log("Upcoming tracks loaded", stationId, data);
 
-          if (data && data.length > 0) {
+          if (data) {
             setUpcomingTracks(data);
-            setloadingUpcomingTracks(false);
             let nextTrackTime = new Date(
               data[0].dateScheduled.replace(" ", "T") + "Z"
             ).toLocaleString();
@@ -138,6 +137,7 @@ export const StationProvider = ({ children }) => {
               fetchUpcomingTracks(station.id);
             }, diff);
           }
+          setloadingUpcomingTracks(false);
 
           timeout = setTimeout(() => {
             fetchUpcomingTracks(station.id);

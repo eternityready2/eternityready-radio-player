@@ -38,7 +38,6 @@ export const UserProvider = ({ children }) => {
         } else {
           const userData = await response.json();
           setUser(userData);
-          router.push(`/admin/station`);
         }
       } catch (error) {
         console.error("Error fetching user details:", error);

@@ -66,8 +66,8 @@ const MobileBanner = () => {
             className="rounded-full bg-white px-3 py-1 text-sm font-bold text-black"
             href={
               device == "android"
-                ? "https://play.google.com/store/apps/details?id=com.wEternityReadyRadio"
-                : "https://apps.apple.com/us/app/eternity-ready/id1564486246"
+                ? "https://play.google.com/store/apps/details?id=com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture"
+                : "https://apps.apple.com/us/app/rapture-ready/id6504677632"
             }
           >
             Visit

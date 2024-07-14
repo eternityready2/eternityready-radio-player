@@ -1,4 +1,5 @@
 "use client";
+
 import * as z from "zod";
 import { useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,6 +21,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { cn } from "@/lib/utils";
+import { FaPencil } from "react-icons/fa6";
 
 const formSchema = z.object({
   trackName: z.string().min(1, { message: "Track name is required" }),
@@ -28,6 +30,8 @@ const formSchema = z.object({
 });
 
 export const TrackForm = ({
+  track,
+  setCurrentTrack,
   station,
   selectedDate,
   setOpen,
@@ -39,17 +43,21 @@ export const TrackForm = ({
   const [searchLoading, setSearchLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const [metadata, setMetadata] = useState(null);
+  const [metadata, setMetadata] = useState(track ? track : null);
 
-  const toastMessage = "Track added successfully.";
-  const action = "Add to schedule";
+  const fileInputRef = useRef(null);
+
+  const toastMessage = track
+    ? "Track updated successfully."
+    : "Track added successfully.";
+  const action = track ? "Update track" : "Add to schedule";
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      trackName: "",
-      artistName: "",
-      dateScheduled: selectedDate,
+      trackName: track?.trackName || "",
+      artistName: track?.artistName || "",
+      dateScheduled: track ? new Date(track.dateScheduled) : selectedDate,
     },
   });
 
@@ -62,16 +70,44 @@ export const TrackForm = ({
       formData.append("artistName", data.artistName);
       formData.append("dateScheduled", formatDateToMySQL(data.dateScheduled));
       formData.append("stationId", station.id);
+
       if (metadata) {
         formData.append("trackId", metadata.trackId);
         formData.append("artistId", metadata.artistId);
         formData.append("trackViewUrl", metadata.trackViewUrl);
         formData.append(
           "artworkURL",
-          metadata.artworkUrl100.replace("100x100", "600x600")
+          metadata.artworkUrl100?.replace("100x100", "600x600") ||
+            metadata.artworkURL
         );
       } else {
         formData.append("artworkURL", "/api/public" + station.thumbnail);
+      }
+
+      if (fileInputRef.current.files[0]) {
+        let uploadFormData = new FormData();
+        uploadFormData.append("thumbnail", fileInputRef.current.files[0]);
+        uploadFormData.append("stationId", station.id);
+        const response = await fetch(
+          `/api/station/${station.id}/schedule/upload`,
+          {
+            method: "POST",
+            body: uploadFormData,
+          }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || "Error processing request");
+        }
+
+        formData.set("artworkURL", result.thumbnail);
+      }
+
+      if (track?.id) {
+        formData.append("_method", "PUT");
+        formData.append("id", track.id);
       }
 
       let endpoint = `/api/station/${station.id}/schedule`;
@@ -89,8 +125,28 @@ export const TrackForm = ({
       }
 
       setOpen(false);
+      setCurrentTrack(null);
+
       setTracks((tracks) => {
-        let updatedTracks = [...tracks, result];
+        result.artworkURL =
+          process.env.NODE_ENV === "production" &&
+          result.artworkURL.startsWith("/schedule/")
+            ? `/api/public${result.artworkURL}`
+            : result.artworkURL;
+        let filteredTracks = track
+          ? tracks.filter((track) => track.id !== result.id)
+          : tracks;
+        let updatedTracks = filteredTracks;
+        if (track) {
+          let formattedDate = result.dateScheduled.split(" ")[0];
+          let formattedTrackDate = track.dateScheduled.split(" ")[0];
+          if (formattedDate === formattedTrackDate) {
+            updatedTracks = [...filteredTracks, result];
+          }
+        } else {
+          updatedTracks = [...filteredTracks, result];
+        }
+
         // Sort the tracks by dateScheduled
         updatedTracks.sort(
           (a, b) => new Date(a.dateScheduled) - new Date(b.dateScheduled)
@@ -101,10 +157,19 @@ export const TrackForm = ({
       setEvents((events) => {
         let eventFound = false;
         // format the date in YYYY-MM-DD
-        const formattedDate = result.dateScheduled.split("T")[0];
-        // find the event with the same date as the new track and update the title
+        const formattedDate = result.dateScheduled.split(" ")[0];
         const updatedEvents = events.map((event) => {
           const formattedEvent = { ...event };
+
+          if (track) {
+            const formattedTrackDate = track.dateScheduled.split(" ")[0];
+            if (formattedTrackDate === event.date) {
+              const totalTracks = +event.title.split(" - ")[0] - 1;
+              formattedEvent.title = `${totalTracks} - Track${
+                totalTracks > 1 ? "s" : ""
+              }`;
+            }
+          }
           if (event.date === formattedDate) {
             eventFound = true;
             const totalTracks = +event.title.split(" - ")[0] + 1;
@@ -114,6 +179,7 @@ export const TrackForm = ({
           }
           return formattedEvent;
         });
+
         if (!eventFound) {
           updatedEvents.push({
             title: "1 - Track",
@@ -149,7 +215,7 @@ export const TrackForm = ({
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
     const seconds = String(date.getSeconds()).padStart(2, "0");
-    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000Z`;
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 
   const searchMetadata = async () => {
@@ -171,6 +237,7 @@ export const TrackForm = ({
       );
 
       setMetadata(trackData);
+      fileInputRef.current.value = null;
     } else {
       toast({
         variant: "destructive",
@@ -269,15 +336,40 @@ export const TrackForm = ({
                 )}
               />
             </div>
-            <Image
-              alt="Track Artwork"
-              loading="lazy"
-              width="100"
-              height="100"
-              className="flex aspect-square h-[100px] w-[100px] items-center justify-center md:h-[150px] md:w-[150px] mb-4 rounded"
-              src={station.thumbnail}
-              ref={trackArtworkRef}
-            />
+            <div className="relative w-[100px] md:w-[150px]">
+              <Image
+                alt="Track Artwork"
+                loading="lazy"
+                width="100"
+                height="100"
+                className="flex aspect-square h-[100px] w-[100px] items-center justify-center md:h-[150px] md:w-[150px] mb-4 rounded"
+                src={track ? track.artworkURL : station.thumbnail}
+                ref={trackArtworkRef}
+              />
+              <Button
+                disabled={searchLoading}
+                type="button"
+                onClick={() => fileInputRef.current.click()}
+                className="absolute top-0 right-0 bg-transparent"
+              >
+                <FaPencil />
+              </Button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  const reader = new FileReader();
+                  reader.onload = (e) => {
+                    trackArtworkRef.current.src = e.target.result;
+                  };
+                  reader.readAsDataURL(file);
+                }}
+                className="hidden"
+                accept="image/*"
+              />
+            </div>
+
             <div className="gap-8 md:grid md:grid-cols-1">
               <FormField
                 control={form.control}

@@ -20,6 +20,15 @@ export async function GET(request, { params }) {
       [stationId, timeNowinUTC]
     );
 
+    if (process.env.NODE_ENV === "production") {
+      // add '/api/public' to artworkURL for production if it starts with '/scheduled/'
+      tracks.forEach((track) => {
+        if (track.artworkURL.startsWith("/schedule/")) {
+          track.artworkURL = `/api/public${track.artworkURL}`;
+        }
+      });
+    }
+
     // Return the fetched tracks
     return NextResponse.json(tracks, { status: 200 });
   } catch (error) {

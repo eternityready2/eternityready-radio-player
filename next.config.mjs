@@ -1,13 +1,8 @@
 /** @type {import('next').NextConfig} */
 
-const cspHeader = `
-    upgrade-insecure-requests;
-`;
-
 const nextConfig = {
   output: "standalone",
   reactStrictMode: false,
-  trailingSlash: true,
   experimental: {
     instrumentationHook: true,
   },
@@ -21,22 +16,6 @@ const nextConfig = {
       },
     ],
   },
-  // async headers() {
-  //   if (process.env.NODE_ENV === "production") {
-  //     return [
-  //       {
-  //         source: "/(.*)",
-  //         headers: [
-  //           {
-  //             key: "Content-Security-Policy",
-  //             value: cspHeader.replace(/\n/g, ""),
-  //           },
-  //         ],
-  //       },
-  //     ];
-  //   }
-  //   return [];
-  // },
   webpack: (config) => {
     config.module = {
       ...config.module,

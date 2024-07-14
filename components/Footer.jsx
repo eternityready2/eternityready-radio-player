@@ -86,7 +86,7 @@ const Footer = () => {
                 <h4 className={styles.title}>Our Apps</h4>
                 <a
                   className={styles.appImg}
-                  href="https://play.google.com/store/apps/details?id=com.wEternityReadyRadio&amp;hl=en_US&amp;gl=US"
+                  href="https://play.google.com/store/apps/details?id=com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture"
                   target="_blank"
                 >
                   <Image
@@ -98,7 +98,7 @@ const Footer = () => {
                 </a>
                 <a
                   className={styles.appImg}
-                  href="https://play.google.com/store/apps/details?id=com.wEternityReadyRadio&amp;hl=en_US&amp;gl=US"
+                  href="https://apps.apple.com/us/app/rapture-ready/id6504677632"
                   target="_blank"
                 >
                   <Image

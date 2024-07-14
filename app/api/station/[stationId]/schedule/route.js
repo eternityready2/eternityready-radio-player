@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
+import path from "path";
+import { existsSync } from "fs";
+import { unlink } from "fs/promises";
 
 const formatDateParam = (input) => {
   return input < 10 ? `0${input}` : input;
@@ -54,19 +57,36 @@ export async function POST(request, { params }) {
       return await deleteTrack(trackId);
     }
 
-    const sql = `INSERT INTO scheduled_tracks (stationId, trackId, artistId, trackName, artistName, trackViewUrl, artworkURL, dateScheduled) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
-    const values = [
-      stationId,
-      formData.get("trackId"),
-      formData.get("artistId"),
-      formData.get("trackName"),
-      formData.get("artistName"),
-      formData.get("trackViewUrl"),
-      formData.get("artworkURL"),
-      formData.get("dateScheduled"),
-    ];
+    let result = null;
 
-    const result = await query(sql, values);
+    if (formData.get("_method") === "PUT") {
+      const sql = `UPDATE scheduled_tracks SET trackId = ?, artistId = ?, trackName = ?, artistName = ?, trackViewUrl = ?, artworkURL = ?, dateScheduled = ? WHERE id = ?`;
+      const values = [
+        formData.get("trackId"),
+        formData.get("artistId"),
+        formData.get("trackName"),
+        formData.get("artistName"),
+        formData.get("trackViewUrl"),
+        formData.get("artworkURL"),
+        formData.get("dateScheduled"),
+        formData.get("id"),
+      ];
+
+      result = await query(sql, values);
+    } else {
+      const sql = `INSERT INTO scheduled_tracks (stationId, trackId, artistId, trackName, artistName, trackViewUrl, artworkURL, dateScheduled) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+      const values = [
+        stationId,
+        formData.get("trackId"),
+        formData.get("artistId"),
+        formData.get("trackName"),
+        formData.get("artistName"),
+        formData.get("trackViewUrl"),
+        formData.get("artworkURL"),
+        formData.get("dateScheduled"),
+      ];
+      result = await query(sql, values);
+    }
 
     if (result.error) {
       return NextResponse.json({ error: result.error }, { status: 400 });
@@ -74,7 +94,7 @@ export async function POST(request, { params }) {
 
     // get the inserted track
     const track = await query("SELECT * FROM scheduled_tracks WHERE id = ?", [
-      result.insertId,
+      result.insertId || formData.get("id"),
     ]);
 
     return NextResponse.json(track[0], { status: 200 });
@@ -86,6 +106,33 @@ export async function POST(request, { params }) {
 // To handle a DELETE request to /api/station/[stationId]/schedule
 async function deleteTrack(trackId) {
   try {
+    if (!trackId) {
+      return NextResponse.json(
+        { error: "Track ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const track = await query("SELECT * FROM scheduled_tracks WHERE id = ?", [
+      trackId,
+    ]);
+    if (!track.length) {
+      return NextResponse.json({ error: "Track not found" }, { status: 404 });
+    }
+
+    if (track[0].artworkURL) {
+      const filePath = path.join(
+        process.cwd(),
+        "public",
+        "schedule",
+        track[0].artworkURL.split("/").pop()
+      );
+
+      if (existsSync(filePath)) {
+        await unlink(filePath);
+      }
+    }
+
     // Execute SQL query to delete the track from the database
     const result = await query("DELETE FROM scheduled_tracks WHERE id = ?", [
       trackId,

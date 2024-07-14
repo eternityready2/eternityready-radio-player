@@ -9,7 +9,7 @@ import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Plus, X } from "lucide-react";
+import { Edit, MoreHorizontal, Plus, Trash } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -25,6 +25,14 @@ import { TrackForm } from "@/components/forms/track-form";
 import { Badge } from "@/components/ui/badge";
 import { AlertModal } from "@/components/modal/alert-modal";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { set } from "date-fns";
 
 const breadcrumbItems = [
   { title: "Station", link: "/admin/station" },
@@ -42,6 +50,7 @@ export default function SchedulePage() {
   const [tracks, setTracks] = useState([]);
   const [events, setEvents] = useState([]);
   const [open, setOpen] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -213,6 +222,8 @@ export default function SchedulePage() {
                     </DialogDescription>
                   </DialogHeader>
                   <TrackForm
+                    track={currentTrack}
+                    setCurrentTrack={setCurrentTrack}
                     station={station}
                     selectedDate={selectedDate}
                     setOpen={setOpen}
@@ -233,19 +244,39 @@ export default function SchedulePage() {
                         width="100"
                         height="100"
                         className="flex aspect-square h-[50px] w-[50px] items-center justify-center md:h-[75px] md:w-[75px]"
-                        src={track.artworkURL || track.artistImage}
+                        src={track.artworkURL}
                       />
                       <div className="mx-4 w-full max-w-full">
                         <div className="flex items-center justify-between">
                           <Badge className="bg-green-700">
                             {formatTrackTime(track.dateScheduled)}
                           </Badge>
-                          <button>
-                            <X
-                              className="h-4 w-4 ml-auto"
-                              onClick={() => setDeleteTrack(track.id)}
-                            />
-                          </button>
+                          <DropdownMenu modal={false}>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  setOpen(true);
+                                  setCurrentTrack(track);
+                                }}
+                              >
+                                <Edit className="mr-2 h-4 w-4" /> Update
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="text-red-500"
+                                onClick={() => setDeleteTrack(track.id)}
+                              >
+                                <Trash className="mr-2 h-4 w-4 text-red-500" />{" "}
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </div>
                         <p className="text-sm font-bold truncate line-clamp-2 whitespace-normal md:text-base">
                           {track.trackName}
