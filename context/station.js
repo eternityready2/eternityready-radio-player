@@ -124,7 +124,7 @@ export const StationProvider = ({ children }) => {
 
           console.log("Upcoming tracks loaded", stationId, data);
 
-          if (data) {
+          if (data && data.length > 0) {
             setUpcomingTracks(data);
             let nextTrackTime = new Date(
               data[0].dateScheduled.replace(" ", "T") + "Z"
