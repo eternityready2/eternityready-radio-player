@@ -79,7 +79,7 @@ const Player = () => {
           </div>
         </div>
         <div className="absolute right-0 left-0 bottom-0 h-[50%] bg-gradient-to-b from-[transparent] to-[#000000ba] rounded-2xl lg:rounded-[35px]"></div>
-        <div className="absolute right-0 left-0 bottom-0 top-0 bg-gradient-to-b from-[transparent] to-[#000000ba] rounded-2xl lg:rounded-[35px] overflow-hidden">
+        <div className="playerBGContainer absolute right-0 left-0 bottom-0 top-0 bg-gradient-to-b from-[transparent] to-[#000000ba] rounded-2xl lg:rounded-[35px] overflow-hidden">
           <Image
             alt="Album artist image"
             priority

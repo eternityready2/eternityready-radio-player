@@ -46,7 +46,11 @@ export const getArtistImage = async (artistId, url) => {
 
           if (artistImage) {
             const artistImageResponse = await fetch(artistImage);
-            const artistImageBuffer = await artistImageResponse.buffer();
+
+            const artistImageArrayBuffer =
+              await artistImageResponse.arrayBuffer();
+            const artistImageBuffer = Buffer.from(artistImageArrayBuffer);
+
             fs.writeFileSync(artistImagePath, artistImageBuffer);
             console.log(`Artist image saved at ${artistImagePath}`);
 
