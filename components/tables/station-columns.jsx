@@ -53,6 +53,10 @@ export const columns = [
     cell: ({ row }) => (row.original.isDefault ? "Yes" : "No"),
   },
   {
+    accessorKey: "orderIndex",
+    header: "ORDER",
+  },
+  {
     id: "actions",
     cell: ({ row }) => (
       <StationCellAction data={row.original} module={"station"} />

@@ -86,6 +86,9 @@ const Player = () => {
             src={currentTrack.artistImage}
             fill
             sizes="100vw"
+            onError={(e) => {
+              e.target.src = "/artist-bg-default.webp";
+            }}
             style={{
               objectFit: "cover",
             }}

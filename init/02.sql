@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS stations (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    orderIndex INT DEFAULT 0,
     name VARCHAR(255),
     refUrl VARCHAR(255),
     logo VARCHAR(255),
@@ -16,6 +17,7 @@ CREATE TABLE IF NOT EXISTS stations (
 
 INSERT INTO `stations`(
     `id`,
+    `orderIndex`,
     `name`,
     `refUrl`,
     `logo`,
@@ -31,6 +33,7 @@ INSERT INTO `stations`(
 )
 VALUES(
     1,
+    1,
     'Eternity Ready Radio',
     '',
     '/stations/EternityReadyRadio_logo.png',
@@ -44,6 +47,7 @@ VALUES(
     0,
     0
 ),(
+    2,
     2,
     'VertiZontal Media',
     'vertizontal-media',
@@ -59,6 +63,7 @@ VALUES(
     1
 ),(
     3,
+    3,
     'Fine Tune Radio',
     'fine-tune-radio',
     '/stations/fineTuneRadio.png',
@@ -72,6 +77,7 @@ VALUES(
     0,
     1
 ),(
+    4,
     4,
     'The Worship Channel',
     'the-worship-channel',
@@ -87,6 +93,7 @@ VALUES(
     1
 ),(
     5,
+    5,
     'KJOL',
     'kjol',
     '/stations/KJOL_logo.png',
@@ -100,6 +107,7 @@ VALUES(
     0,
     1
 ),(
+    6,
     6,
     'Affirm Southern Gospel Radio',
     'affirm-southern-gospel-radio',
@@ -115,6 +123,7 @@ VALUES(
     0
 ),(
     7,
+    7,
     'Heaven\'s Country',
     'heavens-country',
     '/stations/Heaven\'sCountry_logo.png',
@@ -128,6 +137,7 @@ VALUES(
     0,
     1
 ),(
+    8,
     8,
     ' WBLB Family 1340',
     'wblb-family-1340',

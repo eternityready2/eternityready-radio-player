@@ -24,14 +24,6 @@ import Image from "next/image";
 import { MultiSelect } from "../multi-select";
 import { minifyScript } from "@/lib/utils";
 
-const frameworksList = [
-  { value: "react", label: "React" },
-  { value: "angular", label: "Angular" },
-  { value: "vue", label: "Vue" },
-  { value: "svelte", label: "Svelte" },
-  { value: "ember", label: "Ember" },
-];
-
 const MAX_FILE_SIZE = 1024 * 1024 * 5;
 const ACCEPTED_MIME_TYPES = [
   "image/jpeg",
@@ -47,6 +39,9 @@ const formSchema = z
     name: z
       .string()
       .min(3, { message: "Station Name must be at least 3 characters" }),
+    orderIndex: z
+      .preprocess((a) => parseInt(z.string().parse(a), 10), z.number())
+      .optional(),
     refUrl: z.string().url({ message: "Please provide a valid URL" }),
     url: z.string().url({ message: "Please provide a valid URL" }),
     donateLink: z.string().optional(),
@@ -205,6 +200,7 @@ export const StationForm = ({ initialData }) => {
       formData.append("isDefault", data.isDefault);
       formData.append("isActive", data.isActive);
       formData.append("name", data.name);
+      formData.append("orderIndex", data.orderIndex);
       formData.append(
         "refUrl",
         data.refUrl.replace(process.env.NEXT_PUBLIC_APP_URL + "/", "").trim()
@@ -323,6 +319,28 @@ export const StationForm = ({ initialData }) => {
                       Enable or disable this station.
                     </FormDescription>
                   </div>
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="gap-8 md:grid md:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="orderIndex"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Order Index
+                    <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Station Order Index"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />

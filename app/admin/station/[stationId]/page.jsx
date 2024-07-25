@@ -29,7 +29,6 @@ export default function Page() {
 
           const data = await response.json();
           let currentStation = data;
-          console.log(currentStation);
           const timeStamp = new Date().getTime();
 
           currentStation.refUrl =
@@ -52,6 +51,7 @@ export default function Page() {
         }
       } else {
         setStation({
+          orderIndex: 0,
           isDefault: false,
           isActive: true,
           name: "",
