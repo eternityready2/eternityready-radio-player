@@ -8,10 +8,10 @@ services:
     environment:
       - APP_URL=http://listen.eternityready.com
       - NEXT_PUBLIC_APP_URL=http://listen.eternityready.com
-      - DB_HOST=localhost
+      - DB_HOST=64.91.224.123
       - DB_PORT=3306
-      - DB_USERNAME=root
-      - DB_PASSWORD=""
+      - DB_USERNAME=eternity_docker
+      - DB_PASSWORD="^*!*P5hGxe-Q*b"
       - DB_NAME=eternity
     restart: always
     # depends_on:

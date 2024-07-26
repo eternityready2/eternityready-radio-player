@@ -3,8 +3,8 @@ import path from "path";
 import fs from "fs";
 import { query } from "@/lib/db";
 
-// GET API route
-export async function GET() {
+// GET POST route
+export async function POST() {
   try {
     const artists = await query("SELECT * FROM artists");
 

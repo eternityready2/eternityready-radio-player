@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
 
-// GET API route
-export async function GET() {
+// POST API route
+export async function POST() {
   try {
     const artists = await query("SELECT * FROM artists");
     const artistIds = new Set();
