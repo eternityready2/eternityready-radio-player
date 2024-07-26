@@ -34,7 +34,10 @@ export async function register() {
                   artistImage: null,
                 };
 
-                const searchText = stats.icy.StreamTitle;
+                let searchText = stats.icy.StreamTitle;
+                if (searchText.trim().toLowerCase() === "unknown") {
+                  searchText = "";
+                }
                 const encodedSearchText = encodeURIComponent(searchText);
                 const iTunesSearchURL = `https://itunes.apple.com/search?term=${encodedSearchText}&limit=1`;
                 const response = await fetch(iTunesSearchURL);
@@ -101,7 +104,7 @@ export async function register() {
                   }
 
                   // Update the track in the database
-                  const sql = `UPDATE playing SET trackId = ?, artistId = ?, title = ?, trackName = ?, artistName = ?, trackViewUrl = ?, artworkURL = ?, artistImage = ? WHERE stationId = ?`;
+                  const sql = `UPDATE playing SET trackId = ?, artistId = ?, title = ?, trackName = ?, artistName = ?, trackViewUrl = ?, artworkURL = ?, artistImage = ?, timestamp = ? WHERE stationId = ?`;
                   const params = [
                     track.trackId ? track.trackId : 0,
                     track.artistId ? track.artistId : 0,
@@ -111,6 +114,7 @@ export async function register() {
                     track.trackViewUrl ? track.trackViewUrl : "",
                     track.artworkURL ? track.artworkURL : "",
                     track.artistImage ? track.artistImage : "",
+                    new Date(),
                     station.id,
                   ];
                   await query(sql, params);

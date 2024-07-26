@@ -51,7 +51,7 @@ export const PlayerProvider = ({ children }) => {
         ...DEFUALT_TRACK,
         StreamTitle: currentPlaying.title,
         stationId: currentPlaying.stationId,
-        artworkURL: currentPlaying.artworkURL || DEFUALT_TRACK.artworkURL,
+        artworkURL: currentPlaying.artworkURL || station.thumbnail,
         trackName: currentPlaying.trackName,
         artistName: currentPlaying.artistName,
         artistImage: currentPlaying?.artistImage || DEFUALT_TRACK.artistImage,
@@ -59,8 +59,18 @@ export const PlayerProvider = ({ children }) => {
         processed: false,
         metaDataFound: true,
       });
+    } else if (!currentPlaying.title && !initalTrackLoaded && station) {
+      setCurrentTrack({
+        ...DEFUALT_TRACK,
+        trackName: station.name,
+        artworkURL: station.thumbnail,
+        artistImage: DEFUALT_TRACK.artistImage,
+        loaded: true,
+        processed: false,
+        metaDataFound: false,
+      });
     }
-  }, [currentPlaying, initalTrackLoaded]);
+  }, [currentPlaying, initalTrackLoaded, station]);
 
   useEffect(() => {
     if (station && !playerInitialized) {
@@ -208,7 +218,10 @@ export const PlayerProvider = ({ children }) => {
       loaded: true,
     }));
     if (track.StreamTitle) {
-      const searchText = track.StreamTitle;
+      let searchText = track.StreamTitle;
+      if (searchText.trim().toLowerCase() === "unknown") {
+        searchText = "";
+      }
       const encodedSearchText = encodeURIComponent(searchText);
       const iTunesSearchURL = `/itunes-api/search?term=${encodedSearchText}&limit=1`;
       const response = await fetch(iTunesSearchURL);

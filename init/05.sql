@@ -9,5 +9,6 @@ CREATE TABLE IF NOT EXISTS playing (
     trackViewUrl VARCHAR(255),
     artworkURL VARCHAR(255),
     artistImage VARCHAR(255),
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (stationId) REFERENCES stations(id)
 );

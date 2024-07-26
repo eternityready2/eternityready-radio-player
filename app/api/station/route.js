@@ -6,7 +6,9 @@ import { createStation } from "@/lib/station";
 export async function GET(request) {
   try {
     // Execute SQL query to fetch stations from the database
-    const stations = await query("SELECT * FROM stations WHERE isActive = 1");
+    const stations = await query(
+      "SELECT * FROM stations WHERE isActive = 1 ORDER BY orderIndex ASC"
+    );
 
     // add '/api/public' to station logo, thumbnail, and background image
     if (process.env.NODE_ENV === "production") {

@@ -1,43 +1,43 @@
-# services:
-#   nextjs:
-#     build:
-#       context: .
-#       dockerfile: Dockerfile
-#     ports:
-#       - "3000:3000"
-#     environment:
-#       - APP_URL=http://listen.eternityready.com
-#       - NEXT_PUBLIC_APP_URL=http://listen.eternityready.com
-#       - DB_HOST=localhost
-#       - DB_PORT=3306
-#       - DB_USERNAME=root
-#       - DB_PASSWORD=""
-#       - DB_NAME=eternity
-#     restart: always
-#     depends_on:
-#       - nextmysql
-#     volumes:
-#       - ./public:/app/public
+services:
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - APP_URL=http://listen.eternityready.com
+      - NEXT_PUBLIC_APP_URL=http://listen.eternityready.com
+      - DB_HOST=localhost
+      - DB_PORT=3306
+      - DB_USERNAME=root
+      - DB_PASSWORD=""
+      - DB_NAME=eternity
+    restart: always
+    # depends_on:
+    #   - nextmysql
+    volumes:
+      - ./public:/app/public
 
-#   nextmysql:
-#     image: mysql:latest
-#     restart: always
-#     environment:
-#       MYSQL_ROOT_PASSWORD: "eternity"
-#       MYSQL_DATABASE: "eternity"
-#       MYSQL_USER: "eternity"
-#       MYSQL_PASSWORD: "eternity"
-#     ports:
-#       - "3306:3306"
-#     volumes:
-#       - ./init:/docker-entrypoint-initdb.d
+  # nextmysql:
+  #   image: mysql:latest
+  #   restart: always
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: "eternity"
+  #     MYSQL_DATABASE: "eternity"
+  #     MYSQL_USER: "eternity"
+  #     MYSQL_PASSWORD: "eternity"
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - ./init:/docker-entrypoint-initdb.d
 
-#   nextphpmyadmin:
-#     image: phpmyadmin/phpmyadmin
-#     ports:
-#       - "4080:80"
-#     environment:
-#       TZ: Asia/Kolkata
-#       PMA_HOST: nextmysql
-#     depends_on:
-#       - nextmysql
+  # nextphpmyadmin:
+  #   image: phpmyadmin/phpmyadmin
+  #   ports:
+  #     - "4080:80"
+  #   environment:
+  #     TZ: Asia/Kolkata
+  #     PMA_HOST: nextmysql
+  #   depends_on:
+  #     - nextmysql

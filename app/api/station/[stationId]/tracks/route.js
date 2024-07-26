@@ -17,9 +17,11 @@ export async function GET(request, { params }) {
       "SELECT * FROM tracks WHERE stationId = ? ORDER BY id DESC LIMIT 5",
       [stationId]
     );
+    let now = new Date();
+    now.setMinutes(now.getMinutes() - 3);
     let currentPlaying = await query(
-      "SELECT * FROM playing WHERE stationId = ?",
-      [stationId]
+      "SELECT * FROM playing WHERE stationId = ? AND timestamp > ?",
+      [stationId, now]
     );
 
     if (currentPlaying.length > 0) {
@@ -29,7 +31,10 @@ export async function GET(request, { params }) {
     }
 
     // Return the fetched station
-    return NextResponse.json({ tracks, currentPlaying }, { status: 200 });
+    return NextResponse.json(
+      { tracks, currentPlaying, timestamp: new Date() },
+      { status: 200 }
+    );
   } catch (error) {
     // Return error if any
     return NextResponse.json({ error: error.message }, { status: 500 });
