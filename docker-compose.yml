@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    extra_hosts:
+      - "database:64.91.224.123"
     environment:
       - APP_URL=http://listen.eternityready.com
       - NEXT_PUBLIC_APP_URL=http://listen.eternityready.com
