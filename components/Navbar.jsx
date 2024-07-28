@@ -4,14 +4,19 @@ const Navbar = ({ station }) => {
   return (
     <nav className="mx-auto w-full max-w-screen-2xl">
       <div className="flex flex-row items-center justify-between h-[100px] px-4 pt-1 md:px-8 md:h-[140px]">
-        <a target="_blank" href="/" className="flex-1">
+        <a
+          target="_blank"
+          href="/"
+          className="relative h-full content-center flex-1"
+        >
           {station && station.logo && (
             <Image
               alt="station logo"
               loading="lazy"
               width="300"
               height="100"
-              className="w-[100px] md:w-[150px]"
+              // className="w-[100px] md:w-[150px]"
+              className="h-[80%] w-auto drop-shadow-md"
               src={station.logo}
             />
           )}
