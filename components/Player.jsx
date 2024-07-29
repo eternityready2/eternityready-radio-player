@@ -52,10 +52,10 @@ const Player = () => {
               src={currentTrack.artworkURL}
             />
             <div className="flex flex-col">
-              <p className="font-extrabold text-white drop-shadow-md truncate line-clamp-2 whitespace-normal md:mb-2 md:text-4xl md:leading-normal">
+              <p className="break-words font-extrabold text-white drop-shadow-md truncate line-clamp-2 whitespace-normal md:mb-2 md:text-4xl md:leading-normal">
                 {currentTrack.trackName}
               </p>
-              <p className="font-semibold text-white drop-shadow-md truncate line-clamp-2 whitespace-normal md:text-2xl md:leading-normal">
+              <p className="break-words font-semibold text-white drop-shadow-md truncate line-clamp-2 whitespace-normal md:text-2xl md:leading-normal">
                 {currentTrack.artistName}
               </p>
             </div>

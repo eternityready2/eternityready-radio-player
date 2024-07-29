@@ -15,8 +15,7 @@ const Navbar = ({ station }) => {
               loading="lazy"
               width="300"
               height="100"
-              // className="w-[100px] md:w-[150px]"
-              className="h-[80%] w-auto drop-shadow-md"
+              className="max-h-[80%] w-[100px] md:w-[150px]"
               src={station.logo}
             />
           )}

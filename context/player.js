@@ -219,14 +219,18 @@ export const PlayerProvider = ({ children }) => {
     }));
     if (track.StreamTitle) {
       let searchText = track.StreamTitle;
+      let trackData = null;
+
       if (searchText.trim().toLowerCase() === "unknown") {
         searchText = "";
+        track.StreamTitle = station.name;
+      } else {
+        const encodedSearchText = encodeURIComponent(searchText);
+        const iTunesSearchURL = `/itunes-api/search?term=${encodedSearchText}&limit=1`;
+        const response = await fetch(iTunesSearchURL);
+        const json = await response.json();
+        trackData = json.results[0];
       }
-      const encodedSearchText = encodeURIComponent(searchText);
-      const iTunesSearchURL = `/itunes-api/search?term=${encodedSearchText}&limit=1`;
-      const response = await fetch(iTunesSearchURL);
-      const json = await response.json();
-      const trackData = json.results[0];
 
       if (trackData) {
         let artworkURL = trackData.artworkUrl100;
