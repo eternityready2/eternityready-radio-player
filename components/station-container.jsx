@@ -61,7 +61,7 @@ const StationContainer = () => {
         }}
       >
         <div
-          className={`absolute left-0 right-0 bottom-0 w-full h-[55%] bg-[#121212] md:h-[17%]`}
+          className={`absolute left-0 right-0 bottom-0 w-full h-[60%] bg-[#121212] md:h-[17%]`}
         ></div>
         {isMobile && <MobileBanner />}
         <Navbar station={station} />
