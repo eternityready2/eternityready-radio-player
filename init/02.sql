@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS stations (
     analytics LONGTEXT DEFAULT NULL,
     advertisements VARCHAR(512) DEFAULT "[]",
     isDefault BOOLEAN,
-    isActive BOOLEAN DEFAULT TRUE
+    isActive BOOLEAN DEFAULT TRUE,
+    metaPreset VARCHAR(1000) DEFAULT NULL,
 );
 
 INSERT INTO `stations`(
@@ -29,7 +30,8 @@ INSERT INTO `stations`(
     `analytics`,
     `advertisements`,
     `isDefault`,
-    `isActive`
+    `isActive`,
+    `metaPreset`
 )
 VALUES(
     1,
@@ -45,7 +47,8 @@ VALUES(
     NULL,
     '[]',
     0,
-    0
+    0,
+    NULL
 ),(
     2,
     2,
@@ -60,7 +63,8 @@ VALUES(
     NULL,
     '[]',
     0,
-    1
+    1,
+    NULL
 ),(
     3,
     3,
@@ -75,7 +79,8 @@ VALUES(
     NULL,
     '[]',
     0,
-    1
+    1,
+    NULL
 ),(
     4,
     4,
@@ -90,7 +95,8 @@ VALUES(
     NULL,
     '[]',
     0,
-    1
+    1,
+    NULL
 ),(
     5,
     5,
@@ -105,7 +111,8 @@ VALUES(
     NULL,
     '[]',
     0,
-    1
+    1,
+    NULL
 ),(
     6,
     6,
@@ -120,7 +127,8 @@ VALUES(
     NULL,
     '[]',
     0,
-    0
+    0,
+    NULL
 ),(
     7,
     7,
@@ -135,7 +143,8 @@ VALUES(
     NULL,
     '[]',
     0,
-    1
+    1,
+    NULL
 ),(
     8,
     8,
@@ -150,5 +159,6 @@ VALUES(
     NULL,
     '[]',
     0,
-    1
+    1,
+    NULL
 );

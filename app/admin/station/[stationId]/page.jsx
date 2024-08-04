@@ -51,7 +51,7 @@ export default function Page() {
         }
       } else {
         setStation({
-          orderIndex: 0,
+          metaPreset: "",
           isDefault: false,
           isActive: true,
           name: "",

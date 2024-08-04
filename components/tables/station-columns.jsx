@@ -2,6 +2,8 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { StationCellAction } from "./station-cell-action";
 import { Badge } from "@/components/ui/badge";
+import { DragHandleDots2Icon } from "@radix-ui/react-icons";
+import { SortableDragHandle } from "@/components/ui/sortable";
 
 export const columns = [
   {
@@ -53,13 +55,21 @@ export const columns = [
     cell: ({ row }) => (row.original.isDefault ? "Yes" : "No"),
   },
   {
-    accessorKey: "orderIndex",
-    header: "ORDER",
-  },
-  {
     id: "actions",
     cell: ({ row }) => (
       <StationCellAction data={row.original} module={"station"} />
     ),
+  },
+  {
+    id: "drag",
+    cell: () => (
+      <div className="flex justify-end">
+        <SortableDragHandle variant="ghost" size="icon" className="size-8">
+          <DragHandleDots2Icon className="size-4" aria-hidden="true" />
+        </SortableDragHandle>
+      </div>
+    ),
+    enableSorting: false,
+    enableHiding: false,
   },
 ];

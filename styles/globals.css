@@ -29,6 +29,10 @@ a {
   word-break: break-word;
 }
 
+table.sortable.isSorting td:last-child {
+  display: none;
+}
+
 @keyframes gradient {
   0% {
     background-position: 0% 50%;

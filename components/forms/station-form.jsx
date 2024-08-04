@@ -39,9 +39,7 @@ const formSchema = z
     name: z
       .string()
       .min(3, { message: "Station Name must be at least 3 characters" }),
-    orderIndex: z
-      .preprocess((a) => parseInt(z.string().parse(a), 10), z.number())
-      .optional(),
+    metaPreset: z.string().optional(),
     refUrl: z.string().url({ message: "Please provide a valid URL" }),
     url: z.string().url({ message: "Please provide a valid URL" }),
     donateLink: z.string().optional(),
@@ -200,7 +198,7 @@ export const StationForm = ({ initialData }) => {
       formData.append("isDefault", data.isDefault);
       formData.append("isActive", data.isActive);
       formData.append("name", data.name);
-      formData.append("orderIndex", data.orderIndex);
+      formData.append("metaPreset", data.metaPreset);
       formData.append(
         "refUrl",
         data.refUrl.replace(process.env.NEXT_PUBLIC_APP_URL + "/", "").trim()
@@ -326,19 +324,12 @@ export const StationForm = ({ initialData }) => {
           <div className="gap-8 md:grid md:grid-cols-2">
             <FormField
               control={form.control}
-              name="orderIndex"
+              name="metaPreset"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Order Index
-                    <span className="text-red-500">*</span>
-                  </FormLabel>
+                  <FormLabel>Meta Preset</FormLabel>
                   <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Station Order Index"
-                      {...field}
-                    />
+                    <Input placeholder="Station meta preset" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

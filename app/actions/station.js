@@ -15,6 +15,8 @@ export const getStations = async (search, offset, pageLimit) => {
     if (offset) {
       stationQuery += " ORDER BY id DESC LIMIT ? OFFSET ?";
       params.push(pageLimit, offset);
+    } else {
+      stationQuery += " ORDER BY orderIndex ASC";
     }
     const stations = await query(stationQuery, params);
     let totalStations = await query(

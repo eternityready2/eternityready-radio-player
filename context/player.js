@@ -62,7 +62,7 @@ export const PlayerProvider = ({ children }) => {
     } else if (!currentPlaying.title && !initalTrackLoaded && station) {
       setCurrentTrack({
         ...DEFUALT_TRACK,
-        trackName: station.name,
+        trackName: station.metaPreset,
         artworkURL: station.thumbnail,
         artistImage: DEFUALT_TRACK.artistImage,
         loaded: true,
@@ -223,7 +223,7 @@ export const PlayerProvider = ({ children }) => {
 
       if (searchText.trim().toLowerCase() === "unknown") {
         searchText = "";
-        track.StreamTitle = station.name;
+        track.StreamTitle = station.metaPreset;
       } else {
         const encodedSearchText = encodeURIComponent(searchText);
         const iTunesSearchURL = `/itunes-api/search?term=${encodedSearchText}&limit=1`;
