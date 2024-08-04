@@ -87,7 +87,10 @@ const Player = () => {
             fill
             sizes="100vw"
             onError={(e) => {
-              e.target.src = "/artist-bg-default.webp";
+              e.target.style.display = "none";
+            }}
+            onLoad={(e) => {
+              e.target.style.display = "block";
             }}
             style={{
               objectFit: "cover",
