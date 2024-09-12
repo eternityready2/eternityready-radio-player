@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
                   <LastPlayed />
                   <UpNext />
                   <Advertisements />
-                  <NewThisWeek />
+                  {/* <NewThisWeek /> */}
                 </main>
                 <Footer />
               </PlayerProvider>
