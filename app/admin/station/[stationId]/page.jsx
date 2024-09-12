@@ -31,6 +31,7 @@ export default function Page() {
           let currentStation = data;
           const timeStamp = new Date().getTime();
 
+          currentStation.metaPreset = currentStation.metaPreset || "";
           currentStation.refUrl =
             process.env.NEXT_PUBLIC_APP_URL + "/" + currentStation.refUrl;
           currentStation.gtm = currentStation.gtm || "";

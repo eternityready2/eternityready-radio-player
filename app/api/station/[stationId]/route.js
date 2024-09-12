@@ -110,6 +110,13 @@ async function deleteStation(stationId) {
       deleteFileIfExists(backgroundImagePath);
     }
 
+    // Execute SQL query to delete all the 'playing', 'scheduled_tracks', 'tracks' where stationId from the database
+    await query("DELETE FROM playing WHERE stationId = ?", [stationId]);
+    await query("DELETE FROM scheduled_tracks WHERE stationId = ?", [
+      stationId,
+    ]);
+    await query("DELETE FROM tracks WHERE stationId = ?", [stationId]);
+
     // Execute SQL query to delete the station from the database
     const result = await query("DELETE FROM stations WHERE id = ?", [
       stationId,
