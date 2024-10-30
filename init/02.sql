@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS stations (
     advertisements VARCHAR(512) DEFAULT "[]",
     isDefault BOOLEAN,
     isActive BOOLEAN DEFAULT TRUE,
-    metaPreset VARCHAR(1000) DEFAULT NULL,
+    metaPreset VARCHAR(1000) DEFAULT NULL
 );
 
 INSERT INTO `stations`(
